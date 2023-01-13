@@ -1,6 +1,6 @@
 # Localization free super-resolution microbubble velocimetry
 ## About
-
+Python implementation of super-resolution microbubble velocimetry using a long short-term memory neural network \
 U-Net model adapted from https://github.com/milesial/Pytorch-UNet \
 Pytorch implementation of convolutional LSTM from https://github.com/ndrplz/ConvLSTM_pytorch/blob/master/convlstm.py
 
