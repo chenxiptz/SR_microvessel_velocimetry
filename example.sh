@@ -1,0 +1,1 @@
+python3 inference.py -m 'SMV_pretrained_weights_mousebrain.pth.tar' -mf '/home/ultrasound/Desktop/' -fn 'dirfilt_IQData_20220502T105116_3.mat' -ff '/home/ultrasound/Desktop/Deep-SMV/Experiments/MouseBrain/mouse_ecg_502/' -sp 'example_out.mat' -w 16 -bd 1
