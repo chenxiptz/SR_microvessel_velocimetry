@@ -1,7 +1,7 @@
 import numpy as np
 from scipy.io import loadmat
 
-def loadIQ(fpath, nlmfilt=True):
+def loadIQ(fpath, nlmfilt=False):
     matfile = loadmat(fpath)
     if nlmfilt == True:
         ens = np.abs(matfile['nlmfilterAT'])
@@ -10,7 +10,7 @@ def loadIQ(fpath, nlmfilt=True):
     ens = ens / np.max(ens)
     return ens
 
-def loadIQ_dirfilt(fpath, nlmfilt=True):
+def loadIQ_dirfilt(fpath, nlmfilt=False):
     matfile = loadmat(fpath)
     if nlmfilt == True:
         ens_pos = np.abs(matfile['nlmfilterAT_pos'])

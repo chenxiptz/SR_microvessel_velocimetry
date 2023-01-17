@@ -29,6 +29,8 @@ parser.add_argument('-s', '--stepsize', help='Step size between two consecutive 
 parser.add_argument('-rw', '--rollingwindow', help='Rolling window average size', type = int)
 parser.add_argument('-bd', '--bidirectional', help='Whether to plot bidirectional map', type = int,
                     default = 0)
+parser.add_argument('-df', '--directionalfilter', help='Whether input data is after directional filtering', type = int,
+                    default = 1)
 
 
 args = parser.parse_args()
@@ -47,10 +49,16 @@ model = model.to(device)
 state_dict = torch.load(model_path)['state_dict']
 model.load_state_dict(state_dict, strict=False)
 
+if args.directionalfilter == 1:
+    # loading IQ data
+    ens_pos, ens_neg = load_iqdata.loadIQ_dirfilt(args.filefolder+args.filename)
+    # smv processing
+    amplitude_arr, vmap, dmap = smv_process_iq.smv_dirfilt(ens_pos, ens_neg, model, args.windowsize, args.stepsize, device, single_frame = False)
+else:
+    # loading IQ data
+    ens = load_iqdata.loadIQ(args.filefolder+args.filename)
+    # smv processing
+    amplitude_arr, vmap, angles_map, dmap = smv_process_iq.smv_estdir(ens, model, args.windowsize, args.stepsize, device, single_frame = False)
 
-ens_pos, ens_neg = load_iqdata.loadIQ_dirfilt(args.filefolder+args.filename, nlmfilt=False)
-
-# smv processing
-amplitude_arr, vmap, dmap = smv_process_iq.smv_dirfilt(ens_pos, ens_neg, model, args.windowsize, args.stepsize, device, single_frame = False)
-
-savemat(args.savepath, {'vmap_mean':vmap, 'amplitude_arr':np.asarray(amplitude_arr), 'dmap':dmap})
+    
+savemat(args.savepath, {'vmap_mean':vmap, 'amplitude_arr':np.asarray(amplitude_arr), 'dmap':dmap, 'args':args})
